@@ -96,7 +96,7 @@ jobs:
 
   release:
     name: Create tagged release
-    needs: [build-windows, build-linux] #, build-mac
+    needs: [build-windows, build-linux, build-mac] 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -117,6 +117,7 @@ jobs:
       - name: Create release (draft)
         uses: marvinpinto/action-automatic-releases@latest
         with:
+          automatic_release_tag: "latest"
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
           draft: true

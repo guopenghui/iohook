@@ -1,10 +1,10 @@
 name: build-and-release
 
 on:
-  push:
+  #push:
     # v* タグのみトリガー (例: v1.2.3)
-    tags:
-      - 'v*'
+    #tags:
+      #- 'v*'
   # 手動実行は残す（必要な場合のみ）
   workflow_dispatch:
 
@@ -67,32 +67,32 @@ jobs:
           name: prebuilds-${{ matrix.linux-runner }}
           path: prebuilds
 
-#  build-mac:
-#    runs-on: macos-latest
-#
-#    strategy:
-#      matrix:
-#        node-version: [22.x]
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#          cache: 'npm'
-#      # Python3.12の影響でsetuptoolsが必要
-#      - name: install setuptools
-#        run: brew install python-setuptools
-#      - run: npm ci --ignore-scripts
-#      - run: npm run build:ci --all
-#
-#      - name: Upload build artifacts
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: prebuilds-macOS
-#          path: prebuilds
+  build-mac:
+    runs-on: macos-latest
+    
+    strategy:
+      matrix:
+        node-version: [22.x]
+    
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      # Python3.12の影響でsetuptoolsが必要
+      - name: install setuptools
+        run: brew install python-setuptools
+      - run: npm ci --ignore-scripts
+      - run: npm run build:ci --all
+    
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prebuilds-macOS
+          path: prebuilds
 
   release:
     name: Create tagged release
